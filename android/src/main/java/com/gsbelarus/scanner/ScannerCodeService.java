@@ -68,6 +68,7 @@ public class ScannerCodeService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent != null) {
             config = (Config) intent.getSerializableExtra("config");
+            notificationManager.notify(NOTIFICATION_ID, createNotification());
 
             executeScannerApi(new Executor<Void>() {
                 @Override
@@ -117,8 +118,6 @@ public class ScannerCodeService extends Service {
     }
 
     private void initConfig() throws RemoteException {
-        notificationManager.notify(NOTIFICATION_ID, createNotification());
-
         scannerService.aDecodeSetDecodeEnable(1);
         scannerService.aDecodeSetResultType(ScannerService.ResultType.DCD_RESULT_USERMSG);
         scannerService.aDecodeSetVibratorEnable(config.isVibrationEnabled() ? 1 : 0);
